@@ -1,0 +1,37 @@
+{
+  "name": "file-logger",
+  "version": "1.0.0",
+  "main": "dist/logger.js",
+  "types": "dist/logger.d.ts", 
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "keywords": [
+    "logger",
+    "file",
+    "logging",
+    "typescript",
+    "utility",
+    "logging-tool"
+  ],
+  "author": "Deepak K Vishwakarma",
+  "license": "ISC",
+  "description": "A TypeScript-based file logger that provides timestamped log entries with various log levels. Suitable for projects requiring robust file-based logging.",
+  "devDependencies": {
+    "@types/node": "^22.5.0",
+    "typescript": "^5.5.4"
+  },
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imdeepss/file-logger.git"
+  },
+  "homepage": "https://github.com/imdeepss/file-logger#readme",
+  "bugs": {
+    "url": "https://github.com/imdeepss/file-logger/issues"
+  }
+}
