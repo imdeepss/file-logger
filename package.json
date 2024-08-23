@@ -1,13 +1,13 @@
 {
   "name": "@imdeepss/file-logger",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "dist/logger.js",
   "types": "dist/logger.d.ts",
-  "private": false, 
+  "private": false,
   "scripts": {
-    "build": "tsc", 
-    "prepublishOnly": "npm run build", 
-    "test": "echo \"No tests specified\" && exit 0" 
+    "build": "tsc",
+    "prepublishOnly": "npm run build",
+    "test": "echo \"No tests specified\" && exit 0"
   },
   "keywords": [
     "logger",
