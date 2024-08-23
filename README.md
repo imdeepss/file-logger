@@ -46,64 +46,36 @@ To use the logger, you need to have Node.js installed. You can then add this pac
 ```bash
 npm install file-logger
 ```
+
 # or
+
 ```bash
 yarn add file-logger
 ```
+
 Usage
 Here's a basic example of how to use the logger in your project:
 
 ```bash
 import { Logger } from 'file-logger';
 
-// Create a new logger instance
-const logger = (filePath: string, logData: any, level: LogLevel = 'INFO'): boolean => {
-    try {
-        const dir = path.dirname(filePath);
-        if (!fs.existsSync(dir)) {
-            fs.mkdirSync(dir, { recursive: true });
-            console.log(`[Logger] Directory created: ${dir}`);
-        }
 
-        const timestamp = new Date().toISOString();
-        let logEntry: string;
+Logger('logs/app.log', 'Application started', 'INFO');
 
-        if (typeof logData === 'string') {
-            logEntry = `[${timestamp}] [${level}] ${logData}`;
-        } else {
-            try {
-                logEntry = `[${timestamp}] [${level}] ${JSON.stringify(logData, null, 2)}`;
-            } catch (jsonError) {
-                console.error(`[Logger] Failed to stringify log data: ${jsonError}`);
-                return false;
-            }
-        }
+// OR
 
-        fs.appendFileSync(filePath, logEntry + '\n', 'utf8');
-        console.log(`[Logger] Log written to file: ${filePath}`);
-        
-        return true;
-    } catch (error) {
-        if (error instanceof Error) {
-            console.error(`[Logger] Failed to write log: ${error.message}`);
-        } else {
-            console.error(`[Logger] An unknown error occurred`);
-        }
-        return false;
-    }
-};
-
-// Example usage
-logger('logs/app.log', 'Application started', 'INFO');
-logger('logs/app.log', { error: 'Something went wrong' }, 'ERROR');
+const response = Logger('logs/app.log', { error: 'Something went wrong' }, 'ERROR');
+console.log(response) //true
 
 ```
 
 API Reference
 Logger Function
+
 <pre>
 Logger(filePath: string, logData: any, level: LogLevel = 'INFO'): boolean
 </pre>
+
 filePath: string - The path to the log file.
 logData: any - The data to log (can be a string or an object).
 level: LogLevel - The log level. Defaults to 'INFO'. Other values can be 'ERROR' or 'DEBUG'.
