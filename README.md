@@ -19,9 +19,9 @@
   <a href="https://github.com/imdeepss/file-logger#readme">Readme</a>
 </p>
 
-## File Logger
+## Overview
 
-The `file-logger` package is a robust and customizable logging utility for Node.js applications, built with TypeScript. It supports multiple log levels, easy file management, and configurable formatting options.
+`file-logger` is a TypeScript-based logging utility for Node.js applications. It writes log entries to a specified file with timestamped entries and supports multiple log levels including INFO, ERROR, and DEBUG.
 
 ## Table of Contents
 
@@ -37,64 +37,91 @@ The `file-logger` package is a robust and customizable logging utility for Node.
 
 ## Quick Start
 
-Get started with `file-logger` in just a few steps:
+Follow these steps to get started with `file-logger`:
 
-- Install via npm:
+### Installation
 
-  ```bash
-  npm install file-logger
+To use the logger, you need to have Node.js installed. You can then add this package to your project:
 
-Or install with yarn:
-yarn add file-logger
-Import and start logging:
-import { Logger } from 'file-logger';
-
-const logger = new Logger('app.log');
-logger.info('This is an informational message');
-logger.error('This is an error message');
-
-For more detailed instructions, please visit the documentation.
-
-Installation
-You can install file-logger using npm:
+```bash
 npm install file-logger
-
-Or with yarn:
-
+```
+# or
+```bash
 yarn add file-logger
+```
 Usage
-Here's a basic example of how to use file-logger in your project:
+Here's a basic example of how to use the logger in your project:
 
+```bash
 import { Logger } from 'file-logger';
 
-const logger = new Logger('app.log', {
-  level: 'info',
-  format: 'YYYY-MM-DD HH:mm:ss',
-});
+// Create a new logger instance
+const logger = (filePath: string, logData: any, level: LogLevel = 'INFO'): boolean => {
+    try {
+        const dir = path.dirname(filePath);
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir, { recursive: true });
+            console.log(`[Logger] Directory created: ${dir}`);
+        }
 
-logger.info('Application started');
-logger.warn('This is a warning');
-logger.error('An error occurred');
+        const timestamp = new Date().toISOString();
+        let logEntry: string;
 
+        if (typeof logData === 'string') {
+            logEntry = `[${timestamp}] [${level}] ${logData}`;
+        } else {
+            try {
+                logEntry = `[${timestamp}] [${level}] ${JSON.stringify(logData, null, 2)}`;
+            } catch (jsonError) {
+                console.error(`[Logger] Failed to stringify log data: ${jsonError}`);
+                return false;
+            }
+        }
 
+        fs.appendFileSync(filePath, logEntry + '\n', 'utf8');
+        console.log(`[Logger] Log written to file: ${filePath}`);
+        
+        return true;
+    } catch (error) {
+        if (error instanceof Error) {
+            console.error(`[Logger] Failed to write log: ${error.message}`);
+        } else {
+            console.error(`[Logger] An unknown error occurred`);
+        }
+        return false;
+    }
+};
 
-For more advanced usage and configuration options, refer to the API Reference.
+// Example usage
+logger('logs/app.log', 'Application started', 'INFO');
+logger('logs/app.log', { error: 'Something went wrong' }, 'ERROR');
+
+```
 
 API Reference
-Logger(fileName: string, options?: LoggerOptions): Creates a new logger instance.
-fileName: The name of the log file.
-options: Configuration options for the logger.
-logger.info(message: string): Logs an informational message.
-logger.warn(message: string): Logs a warning message.
-logger.error(message: string): Logs an error message.
-logger.debug(message: string): Logs a debug message.
-For a full list of methods and options, please refer to the API documentation.
-
+Logger Function
+<pre>
+Logger(filePath: string, logData: any, level: LogLevel = 'INFO'): boolean
+</pre>
+filePath: string - The path to the log file.
+logData: any - The data to log (can be a string or an object).
+level: LogLevel - The log level. Defaults to 'INFO'. Other values can be 'ERROR' or 'DEBUG'.
+Return Value
+boolean - Returns true if the log was written successfully, false otherwise.
 Contributing
-Contributions are welcome! Please read the contributing guidelines for more information on how to contribute.
+Contributions are welcome! To contribute:
+
+Fork the repository.
+Create a new branch (git checkout -b feature-name).
+Make your changes.
+Commit your changes (git commit -m 'Add new feature').
+Push to the branch (git push origin feature-name).
+Open a pull request.
+For detailed instructions, refer to the contributing guidelines in the repository.
 
 Community
-Join the community and get updates:
+Join the community and stay updated:
 
 GitHub Issues: Report issues or suggest features.
 Twitter: Follow @imdeepss for updates.
@@ -107,6 +134,8 @@ Special thanks to all contributors and supporters of this project. Your feedback
 License
 This project is licensed under the ISC License.
 
+<pre>
 
+This `README.md` provides a comprehensive guide on using your logger function, including installation, usage, and API reference, while keeping the information clear and organized.
 
-This version should be easier to read and follows a clean, consistent format. Adjust the links and content as needed to match your actual project details.
+</pre>
